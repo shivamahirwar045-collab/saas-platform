@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSaaS } from '../../context/SaaSContext';
@@ -30,6 +30,12 @@ import {
   FileText
 } from '../icons';
 
+const useIsomorphicLayoutEffect =
+  typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
+
+// Module-level cache to survive client-side route transitions instantly
+let cachedSidebarScroll: number | null = null;
+
 interface SidebarProps {
   isMobileOpen: boolean;
   onCloseMobile: () => void;
@@ -38,6 +44,66 @@ interface SidebarProps {
 export function Sidebar({ isMobileOpen, onCloseMobile }: SidebarProps) {
   const pathname = usePathname();
   const { currentBusiness, modules } = useSaaS();
+  const navRef = useRef<HTMLElement>(null);
+  const isRestoringRef = useRef(false);
+
+  // Restore scroll position on mount and route change
+  useIsomorphicLayoutEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+
+    let targetScroll = cachedSidebarScroll;
+    if (targetScroll === null && typeof window !== 'undefined') {
+      try {
+        const saved = sessionStorage.getItem('sidebar_scroll_top');
+        if (saved !== null) {
+          targetScroll = parseInt(saved, 10);
+          cachedSidebarScroll = targetScroll;
+        }
+      } catch {}
+    }
+
+    if (targetScroll !== null && !isNaN(targetScroll)) {
+      isRestoringRef.current = true;
+      nav.scrollTop = targetScroll;
+
+      const raf = requestAnimationFrame(() => {
+        if (navRef.current && targetScroll !== null && !isNaN(targetScroll)) {
+          navRef.current.scrollTop = targetScroll;
+        }
+        setTimeout(() => {
+          isRestoringRef.current = false;
+        }, 100);
+      });
+
+      return () => cancelAnimationFrame(raf);
+    } else {
+      const activeEl = nav.querySelector('[data-active="true"]');
+      if (activeEl) {
+        activeEl.scrollIntoView({ block: 'nearest' });
+      }
+    }
+  }, [pathname]);
+
+  const handleScroll = (e: React.UIEvent<HTMLElement>) => {
+    if (isRestoringRef.current) return;
+    const top = e.currentTarget.scrollTop;
+    cachedSidebarScroll = top;
+    try {
+      sessionStorage.setItem('sidebar_scroll_top', String(top));
+    } catch {}
+  };
+
+  const handleLinkClick = () => {
+    if (navRef.current) {
+      const top = navRef.current.scrollTop;
+      cachedSidebarScroll = top;
+      try {
+        sessionStorage.setItem('sidebar_scroll_top', String(top));
+      } catch {}
+    }
+    onCloseMobile();
+  };
 
   // Helper to check if a module is enabled
   const isModuleActive = (modId: string) => {
@@ -150,7 +216,11 @@ export function Sidebar({ isMobileOpen, onCloseMobile }: SidebarProps) {
         </div>
 
         {/* Scrollable Navigation */}
-        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5">
+        <nav
+          ref={navRef}
+          onScroll={handleScroll}
+          className="flex-1 overflow-y-auto px-3 py-4 space-y-5"
+        >
           {navGroups.map((grp, gIdx) => (
             <div key={gIdx} className="space-y-1">
               <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 px-3 mb-1.5">
@@ -166,7 +236,8 @@ export function Sidebar({ isMobileOpen, onCloseMobile }: SidebarProps) {
                   <Link
                     key={iIdx}
                     href={item.path}
-                    onClick={onCloseMobile}
+                    onClick={handleLinkClick}
+                    data-active={isActive ? 'true' : undefined}
                     className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all group ${
                       isActive
                         ? 'bg-blue-600 text-white font-semibold shadow-xs shadow-blue-600/30'

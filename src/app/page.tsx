@@ -30,11 +30,278 @@ import {
   Clock
 } from '@/components/icons';
 
+const showcaseContent = {
+  pos: {
+    title: 'Cloud Point of Sale & Cash Registers',
+    subtitle: 'Lightning-fast touch terminal synchronized with web inventory and fiscal PAC',
+    points: [
+      'Instant barcode scanning and multi-tender checkout (Cash, Card, Yappy, Crypto)',
+      'Automatic DGI-compliant fiscal factura generation with CUFE and QR',
+      'Multi-register shift tracking with opening/closing float reconciliation',
+      'Works seamlessly on iPad, Android tablets, laptops, and POS terminals'
+    ],
+    tag: 'Retail & Food Tech',
+    metric: '0.8s',
+    metricLabel: 'Average Checkout Time'
+  },
+  website: {
+    title: 'AI-Powered Digital Storefront Builder',
+    subtitle: 'Turn your product catalog into a high-converting website in under 60 seconds',
+    points: [
+      'Generate full landing pages, catalogs, and checkout with one prompt',
+      'Real-time WYSIWYG section builder with custom styling and device preview',
+      'Automated SEO meta tags, OpenGraph previews, and sitemap generation',
+      'Custom domain binding with free automated SSL encryption'
+    ],
+    tag: 'No-Code E-commerce',
+    metric: '60s',
+    metricLabel: 'From Prompt to Live Store'
+  },
+  crm: {
+    title: 'Customer 360 & Deal Pipelines',
+    subtitle: 'Turn website visitors and retail shoppers into lifetime brand advocates',
+    points: [
+      'Omnichannel Customer 360 profile unifying store visits, orders, and chats',
+      '7-stage Kanban deal pipeline with probability forecasting',
+      'Automatic segmentation: VIP, Corporate, Repeat, and At-Risk',
+      'WhatsApp direct messaging and automated follow-up sequences'
+    ],
+    tag: 'Sales Automation',
+    metric: '3.4x',
+    metricLabel: 'Higher Lead Conversion'
+  },
+  inventory: {
+    title: 'Multi-Warehouse & Smart Stock Buffer',
+    subtitle: 'Never lose a sale to out-of-stock items across branches or online stores',
+    points: [
+      'Real-time inventory sync across online stores, retail branches, and warehouses',
+      'Automated low-stock buffer alerts and dynamic supplier purchase orders',
+      'Aisle, rack, and shelf bin mapping with barcode location tracking',
+      'Inter-branch stock transfer requests with digital audit trails'
+    ],
+    tag: 'Supply Chain',
+    metric: '99.8%',
+    metricLabel: 'Inventory Accuracy'
+  },
+  fiscal: {
+    title: 'Panama DGI PAC Certified Invoicing',
+    subtitle: '100% tax compliant electronic invoicing built directly into every sale',
+    points: [
+      'Official PAC authorization with The Factory HKA and Digifact integration',
+      'Automated CUFE generation, RUC/DV validation, and tamper-proof QR codes',
+      'Automatic transmission queue with offline buffering and retry resilience',
+      'Direct PDF email delivery and 80mm thermal receipt printing'
+    ],
+    tag: 'Legal Compliance',
+    metric: '100%',
+    metricLabel: 'DGI Compliance Guarantee'
+  }
+};
+
+function DepartmentShowcase() {
+  const [activeTab, setActiveTab] = useState<'pos' | 'website' | 'crm' | 'inventory' | 'fiscal'>('pos');
+  const current = showcaseContent[activeTab];
+
+  return (
+    <section id="platform" className="py-24 bg-slate-950 border-y border-slate-800/80 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="text-center max-w-3xl mx-auto">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-blue-400">
+            Architecture & Capabilities
+          </h2>
+          <p className="mt-2 text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Deep, purpose-built engines for every department.
+          </p>
+          <p className="mt-4 text-sm sm:text-base text-slate-400 leading-relaxed">
+            Click through the core engines below to explore how KIAAN unifies point-of-sale,
+            e-commerce storefronts, customer retention, warehouse operations, and fiscal compliance.
+          </p>
+        </div>
+
+        {/* Tab Selector */}
+        <div className="mt-12 flex items-center justify-center gap-2 flex-wrap relative z-20">
+          {[
+            { id: 'pos', label: 'Cloud POS', icon: Monitor },
+            { id: 'website', label: 'AI Store Builder', icon: Globe },
+            { id: 'crm', label: 'CRM & Pipeline', icon: Users },
+            { id: 'inventory', label: 'Smart Inventory', icon: Package },
+            { id: 'fiscal', label: 'Panama PAC Fiscal', icon: Receipt }
+          ].map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setActiveTab(tab.id as any);
+                }}
+                className={`cursor-pointer flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all select-none relative z-30 ${
+                  isActive
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30 ring-2 ring-blue-400/50'
+                    : 'bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-850 border border-slate-800'
+                }`}
+              >
+                <Icon className="w-4 h-4 pointer-events-none" />
+                <span className="pointer-events-none">{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Tab Content Display */}
+        <div className="mt-8 bg-slate-900/90 rounded-3xl border border-slate-800 p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <div>
+            <span className="text-xs font-bold text-blue-400 bg-blue-950/60 border border-blue-500/30 px-3 py-1 rounded-full uppercase tracking-wider">
+              {current.tag}
+            </span>
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-white mt-4 tracking-tight">
+              {current.title}
+            </h3>
+            <p className="text-slate-300 text-sm sm:text-base mt-2 leading-relaxed">
+              {current.subtitle}
+            </p>
+
+            <div className="mt-6 space-y-3.5">
+              {current.points.map((pt, idx) => (
+                <div key={idx} className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                  <span className="text-xs sm:text-sm text-slate-300 leading-snug">{pt}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 pt-6 border-t border-slate-800 flex items-center gap-6">
+              <div>
+                <p className="text-2xl sm:text-3xl font-extrabold text-white">
+                  {current.metric}
+                </p>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  {current.metricLabel}
+                </p>
+              </div>
+              <Link
+                href={`/${activeTab === 'website' ? 'website' : activeTab}`}
+                className="ml-auto inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                <span>Launch {activeTab.toUpperCase()} Module</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Interactive Visual Card */}
+          <div className="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-inner relative overflow-hidden">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
+              <span className="text-xs font-mono text-slate-400">STATUS: CONNECTED & SYNCED</span>
+              <span className="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold">
+                REAL-TIME
+              </span>
+            </div>
+
+            <div className="space-y-3 font-mono text-xs">
+              <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 flex justify-between items-center">
+                <span className="text-slate-400">Active Node:</span>
+                <span className="text-white font-semibold">
+                  {activeTab === 'pos' && 'POS Terminal Node — Panama City HQ'}
+                  {activeTab === 'website' && 'AI Storefront Edge CDN Node'}
+                  {activeTab === 'crm' && 'Omnichannel WhatsApp & Deal Pipeline'}
+                  {activeTab === 'inventory' && 'Smart Multi-Warehouse Stock Router'}
+                  {activeTab === 'fiscal' && 'Panama DGI PAC Authorization Link'}
+                </span>
+              </div>
+              <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 flex justify-between items-center">
+                <span className="text-slate-400">Database Engine:</span>
+                <span className="text-white font-semibold">Multi-Tenant Isolated Partition</span>
+              </div>
+              <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 flex justify-between items-center">
+                <span className="text-slate-400">Encryption:</span>
+                <span className="text-emerald-400 font-semibold">AES-256 TLS 1.3 Strict</span>
+              </div>
+              <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 flex justify-between items-center">
+                <span className="text-slate-400">Engine Protocol:</span>
+                <span className="text-blue-400 font-semibold">
+                  {activeTab === 'pos' && 'Lightning POS Register Sync'}
+                  {activeTab === 'website' && 'AI Section Renderer v2'}
+                  {activeTab === 'crm' && 'Customer 360 Event Hub'}
+                  {activeTab === 'inventory' && 'Dynamic Stock Buffer Alert'}
+                  {activeTab === 'fiscal' && 'PAC Provider: The Factory HKA / Digifact'}
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-blue-900/40 to-indigo-900/40 border border-blue-500/20 text-xs text-slate-300 flex items-center justify-between">
+              <span>Try the full workspace in interactive demo mode:</span>
+              <Link
+                href="/dashboard"
+                className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors shrink-0"
+              >
+                Test Module →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FAQSection({ faqs }: { faqs: Array<{ q: string; a: string }> }) {
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  return (
+    <section id="faq" className="py-24 max-w-4xl mx-auto px-4 sm:px-6">
+      <div className="text-center mb-16">
+        <h2 className="text-xs font-bold uppercase tracking-wider text-blue-400">
+          Got Questions?
+        </h2>
+        <p className="mt-2 text-3xl font-extrabold text-white tracking-tight">
+          Frequently Asked Questions
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        {faqs.map((faq, idx) => {
+          const isOpen = openFaq === idx;
+          return (
+            <div
+              key={idx}
+              className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden transition-all"
+            >
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setOpenFaq((prev) => (prev === idx ? null : idx));
+                }}
+                className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-sm text-white hover:text-blue-300 transition-colors cursor-pointer select-none"
+              >
+                <span className="pointer-events-none">{faq.q}</span>
+                <ChevronDown
+                  className={`w-4 h-4 text-slate-400 transition-transform duration-200 pointer-events-none ${
+                    isOpen ? 'rotate-180 text-blue-400' : ''
+                  }`}
+                />
+              </button>
+              {isOpen && (
+                <div className="px-5 pb-5 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-slate-850 pt-3">
+                  {faq.a}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('annual');
-  const [activeShowcaseTab, setActiveShowcaseTab] = useState<'pos' | 'website' | 'crm' | 'inventory' | 'fiscal'>('pos');
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   // ROI Calculator state
   const [roiOrders, setRoiOrders] = useState(850);
@@ -49,74 +316,6 @@ export default function LandingPage() {
   const monthlySavings = separateSaaSMonthlyCost - businessOsCost;
   const annualSavings = monthlySavings * 12;
   const estimatedHoursSaved = Math.round(roiEmployees * 14);
-
-  const showcaseContent = {
-    pos: {
-      title: 'Cloud Point of Sale & Cash Registers',
-      subtitle: 'Lightning-fast touch terminal synchronized with web inventory and fiscal PAC',
-      points: [
-        'Instant barcode scanning and multi-tender checkout (Cash, Card, Yappy, Crypto)',
-        'Automatic DGI-compliant fiscal factura generation with CUFE and QR',
-        'Multi-register shift tracking with opening/closing float reconciliation',
-        'Works seamlessly on iPad, Android tablets, laptops, and POS terminals'
-      ],
-      tag: 'Retail & Food Tech',
-      metric: '0.8s',
-      metricLabel: 'Average Checkout Time'
-    },
-    website: {
-      title: 'AI-Powered Digital Storefront Builder',
-      subtitle: 'Turn your product catalog into a high-converting website in under 60 seconds',
-      points: [
-        'Generate full landing pages, catalogs, and checkout with one prompt',
-        'Real-time WYSIWYG section builder with custom styling and device preview',
-        'Automated SEO meta tags, OpenGraph previews, and sitemap generation',
-        'Custom domain binding with free automated SSL encryption'
-      ],
-      tag: 'No-Code E-commerce',
-      metric: '60s',
-      metricLabel: 'From Prompt to Live Store'
-    },
-    crm: {
-      title: 'Customer 360 & Deal Pipelines',
-      subtitle: 'Turn website visitors and retail shoppers into lifetime brand advocates',
-      points: [
-        'Omnichannel Customer 360 profile unifying store visits, orders, and chats',
-        '7-stage Kanban deal pipeline with probability forecasting',
-        'Automatic segmentation: VIP, Corporate, Repeat, and At-Risk',
-        'WhatsApp direct messaging and automated follow-up sequences'
-      ],
-      tag: 'Sales Automation',
-      metric: '3.4x',
-      metricLabel: 'Higher Lead Conversion'
-    },
-    inventory: {
-      title: 'Multi-Warehouse & Smart Stock Buffer',
-      subtitle: 'Never lose a sale to out-of-stock items across branches or online stores',
-      points: [
-        'Real-time inventory sync across online stores, retail branches, and warehouses',
-        'Automated low-stock buffer alerts and dynamic supplier purchase orders',
-        'Aisle, rack, and shelf bin mapping with barcode location tracking',
-        'Inter-branch stock transfer requests with digital audit trails'
-      ],
-      tag: 'Supply Chain',
-      metric: '99.8%',
-      metricLabel: 'Inventory Accuracy'
-    },
-    fiscal: {
-      title: 'Panama DGI PAC Certified Invoicing',
-      subtitle: '100% tax compliant electronic invoicing built directly into every sale',
-      points: [
-        'Official PAC authorization with The Factory HKA and Digifact integration',
-        'Automated CUFE generation, RUC/DV validation, and tamper-proof QR codes',
-        'Automatic transmission queue with offline buffering and retry resilience',
-        'Direct PDF email delivery and 80mm thermal receipt printing'
-      ],
-      tag: 'Legal Compliance',
-      metric: '100%',
-      metricLabel: 'DGI Compliance Guarantee'
-    }
-  };
 
   const coreModules = [
     {
@@ -500,144 +699,7 @@ export default function LandingPage() {
       </section>
 
       {/* 3. Platform Interactive Showcase */}
-      <section id="platform" className="py-24 bg-slate-950 border-y border-slate-800/80 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-blue-400">
-              Architecture & Capabilities
-            </h2>
-            <p className="mt-2 text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Deep, purpose-built engines for every department.
-            </p>
-            <p className="mt-4 text-sm sm:text-base text-slate-400 leading-relaxed">
-              Click through the core engines below to explore how KIAAN unifies point-of-sale,
-              e-commerce storefronts, customer retention, warehouse operations, and fiscal compliance.
-            </p>
-          </div>
-
-          {/* Tab Selector */}
-          <div className="mt-12 flex items-center justify-center gap-2 flex-wrap">
-            {[
-              { id: 'pos', label: 'Cloud POS', icon: Monitor },
-              { id: 'website', label: 'AI Store Builder', icon: Globe },
-              { id: 'crm', label: 'CRM & Pipeline', icon: Users },
-              { id: 'inventory', label: 'Smart Inventory', icon: Package },
-              { id: 'fiscal', label: 'Panama PAC Fiscal', icon: Receipt }
-            ].map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeShowcaseTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => setActiveShowcaseTab(tab.id as any)}
-                  className={`cursor-pointer flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
-                    isActive
-                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30 ring-2 ring-blue-400/50'
-                      : 'bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-850 border border-slate-800'
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Tab Content Display */}
-          <div className="mt-8 bg-slate-900/90 rounded-3xl border border-slate-800 p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-            <div>
-              <span className="text-xs font-bold text-blue-400 bg-blue-950/60 border border-blue-500/30 px-3 py-1 rounded-full uppercase tracking-wider">
-                {showcaseContent[activeShowcaseTab].tag}
-              </span>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-white mt-4 tracking-tight">
-                {showcaseContent[activeShowcaseTab].title}
-              </h3>
-              <p className="text-slate-300 text-sm sm:text-base mt-2 leading-relaxed">
-                {showcaseContent[activeShowcaseTab].subtitle}
-              </p>
-
-              <div className="mt-6 space-y-3.5">
-                {showcaseContent[activeShowcaseTab].points.map((pt, idx) => (
-                  <div key={idx} className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                    <span className="text-xs sm:text-sm text-slate-300 leading-snug">{pt}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-8 pt-6 border-t border-slate-800 flex items-center gap-6">
-                <div>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-white">
-                    {showcaseContent[activeShowcaseTab].metric}
-                  </p>
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    {showcaseContent[activeShowcaseTab].metricLabel}
-                  </p>
-                </div>
-                <Link
-                  href={`/${activeShowcaseTab === 'website' ? 'website' : activeShowcaseTab}`}
-                  className="ml-auto inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors"
-                >
-                  <span>Launch {activeShowcaseTab.toUpperCase()} Module</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
-
-            {/* Interactive Visual Card */}
-            <div className="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-inner relative overflow-hidden">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
-                <span className="text-xs font-mono text-slate-400">STATUS: CONNECTED & SYNCED</span>
-                <span className="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold">
-                  REAL-TIME
-                </span>
-              </div>
-
-              <div className="space-y-3 font-mono text-xs">
-                <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 flex justify-between items-center">
-                  <span className="text-slate-400">Active Node:</span>
-                  <span className="text-white font-semibold">
-                    {activeShowcaseTab === 'pos' && 'POS Terminal Node — Panama City HQ'}
-                    {activeShowcaseTab === 'website' && 'AI Storefront Edge CDN Node'}
-                    {activeShowcaseTab === 'crm' && 'Omnichannel WhatsApp & Deal Pipeline'}
-                    {activeShowcaseTab === 'inventory' && 'Smart Multi-Warehouse Stock Router'}
-                    {activeShowcaseTab === 'fiscal' && 'Panama DGI PAC Authorization Link'}
-                  </span>
-                </div>
-                <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 flex justify-between items-center">
-                  <span className="text-slate-400">Database Engine:</span>
-                  <span className="text-white font-semibold">Multi-Tenant Isolated Partition</span>
-                </div>
-                <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 flex justify-between items-center">
-                  <span className="text-slate-400">Encryption:</span>
-                  <span className="text-emerald-400 font-semibold">AES-256 TLS 1.3 Strict</span>
-                </div>
-                <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 flex justify-between items-center">
-                  <span className="text-slate-400">Engine Protocol:</span>
-                  <span className="text-blue-400 font-semibold">
-                    {activeShowcaseTab === 'pos' && 'Lightning POS Register Sync'}
-                    {activeShowcaseTab === 'website' && 'AI Section Renderer v2'}
-                    {activeShowcaseTab === 'crm' && 'Customer 360 Event Hub'}
-                    {activeShowcaseTab === 'inventory' && 'Dynamic Stock Buffer Alert'}
-                    {activeShowcaseTab === 'fiscal' && 'PAC Provider: The Factory HKA / Digifact'}
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-blue-900/40 to-indigo-900/40 border border-blue-500/20 text-xs text-slate-300 flex items-center justify-between">
-                <span>Try the full workspace in interactive demo mode:</span>
-                <Link
-                  href="/dashboard"
-                  className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors shrink-0"
-                >
-                  Test Module →
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <DepartmentShowcase />
 
       {/* 4. Complete Core Modules Grid */}
       <section id="modules" className="py-24 max-w-7xl mx-auto px-4 sm:px-6">
@@ -1210,46 +1272,7 @@ export default function LandingPage() {
       </section>
 
       {/* 10. Frequently Asked Questions */}
-      <section id="faq" className="py-24 max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-blue-400">
-            Got Questions?
-          </h2>
-          <p className="mt-2 text-3xl font-extrabold text-white tracking-tight">
-            Frequently Asked Questions
-          </p>
-        </div>
-
-        <div className="space-y-4">
-          {faqs.map((faq, idx) => {
-            const isOpen = openFaq === idx;
-            return (
-              <div
-                key={idx}
-                className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden transition-all"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenFaq((prev) => (prev === idx ? null : idx))}
-                  className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-sm text-white hover:text-blue-300 transition-colors cursor-pointer select-none"
-                >
-                  <span>{faq.q}</span>
-                  <ChevronDown
-                    className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
-                      isOpen ? 'rotate-180 text-blue-400' : ''
-                    }`}
-                  />
-                </button>
-                {isOpen && (
-                  <div className="px-5 pb-5 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-slate-850 pt-3">
-                    {faq.a}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      <FAQSection faqs={faqs} />
 
       {/* 11. Final High-Impact CTA Banner */}
       <section className="py-20 bg-gradient-to-r from-blue-900 via-indigo-950 to-slate-900 border-t border-blue-500/30">
