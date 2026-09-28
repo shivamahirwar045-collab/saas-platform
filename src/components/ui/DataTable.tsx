@@ -73,6 +73,35 @@ export function DataTable<T extends { id: string | number }>({
     });
   };
 
+  const handleExportCsv = () => {
+    if (filteredData.length === 0) return;
+
+    const headers = columns.map(c => `"${c.header.replace(/"/g, '""')}"`).join(',');
+    const rows = filteredData.map(item => {
+      return columns.map(col => {
+        let val = '';
+        if (col.accessorKey) {
+          const raw = item[col.accessorKey];
+          val = typeof raw === 'object' ? JSON.stringify(raw) : String(raw ?? '');
+        } else {
+          val = (item as any).name || (item as any).title || (item as any).orderNumber || (item as any).poNumber || (item as any).id || '';
+        }
+        return `"${String(val).replace(/"/g, '""')}"`;
+      }).join(',');
+    });
+
+    const csvContent = [headers, ...rows].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    const fileName = `${(title || 'Export').toLowerCase().replace(/[^a-z0-9]/g, '_')}_${Date.now()}.csv`;
+    link.setAttribute('href', url);
+    link.setAttribute('download', fileName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="bg-white rounded-xl border border-slate-200/80 shadow-xs overflow-hidden">
       {(title || actions || searchKey !== undefined) && (
@@ -101,8 +130,8 @@ export function DataTable<T extends { id: string | number }>({
 
             <button
               title="Export CSV"
-              onClick={() => alert(`Exporting ${filteredData.length} records to CSV format.`)}
-              className="p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg border border-slate-200 transition-colors"
+              onClick={handleExportCsv}
+              className="p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg border border-slate-200 transition-colors cursor-pointer"
             >
               <Download className="w-4 h-4" />
             </button>
