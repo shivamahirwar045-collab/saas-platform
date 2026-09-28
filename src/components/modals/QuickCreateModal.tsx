@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useSaaS } from '../../context/SaaSContext';
 import { X, Check, ShoppingCart, Users, Package, Link2, HelpCircle } from '../icons';
 
@@ -13,6 +14,11 @@ interface QuickCreateModalProps {
 export function QuickCreateModal({ isOpen, onClose, defaultTab = 'lead' }: QuickCreateModalProps) {
   const { addProduct, addCustomer, addLead, createPaymentLink, createSupportTicket, currentBranch } = useSaaS();
   const [tab, setTab] = useState<'product' | 'customer' | 'lead' | 'link' | 'ticket'>(defaultTab);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Forms
   const [productForm, setProductForm] = useState({
@@ -127,7 +133,7 @@ export function QuickCreateModal({ isOpen, onClose, defaultTab = 'lead' }: Quick
     onClose();
   };
 
-  return (
+  const modalContent = (
     <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-2xs flex items-center justify-center p-4">
       <div
         className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden animate-in fade-in zoom-in-95 duration-150"
@@ -429,4 +435,7 @@ export function QuickCreateModal({ isOpen, onClose, defaultTab = 'lead' }: Quick
       </div>
     </div>
   );
+
+  if (!mounted) return null;
+  return createPortal(modalContent, document.body);
 }

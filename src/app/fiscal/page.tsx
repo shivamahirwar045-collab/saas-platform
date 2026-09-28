@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import jsPDF from 'jspdf';
 import { AppShell } from '@/components/layout/AppShell';
 import { useSaaS } from '@/context/SaaSContext';
 import { FiscalInvoice } from '@/types/saas';
@@ -40,6 +41,135 @@ export default function FiscalBillingPage() {
       setIsPinging(false);
       setPingResult(`Connected to ${pacProvider} DGI Endpoints (142ms latency) - SSL TLS 1.3 Active`);
     }, 800);
+  };
+
+  const handleDownloadPdf = (inv: FiscalInvoice) => {
+    try {
+      const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      // Header Banner
+      doc.setFillColor(30, 41, 59);
+      doc.rect(0, 0, 210, 28, 'F');
+      
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.text('REPÚBLICA DE PANAMÁ - DGI', 15, 12);
+      
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'normal');
+      doc.text('FACTURA ELECTRÓNICA DE PANAMÁ (FE)', 15, 20);
+
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'bold');
+      doc.text(`N°: ${inv.invoiceNumber}`, 195, 16, { align: 'right' });
+
+      // Emisor Box
+      let y = 38;
+      doc.setDrawColor(226, 232, 240);
+      doc.setFillColor(248, 250, 252);
+      doc.roundedRect(15, y, 88, 32, 2, 2, 'FD');
+
+      doc.setTextColor(30, 41, 59);
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'bold');
+      doc.text('DATOS DEL EMISOR', 19, y + 7);
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`Razón Social: ${currentBusiness?.name || 'Acme Retail & Tech'}`, 19, y + 13);
+      doc.text(`RUC: ${currentBusiness?.taxId || '155789012-2-2021'}   DV: ${currentBusiness?.dv || '44'}`, 19, y + 19);
+      doc.text(`Dirección: ${currentBusiness?.address || 'Calle 50, Panamá'}`, 19, y + 25);
+
+      // Receptor Box
+      doc.roundedRect(107, y, 88, 32, 2, 2, 'FD');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.text('DATOS DEL RECEPTOR', 111, y + 7);
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`Cliente: ${inv.customerName}`, 111, y + 13);
+      doc.text(`RUC: ${inv.customerRuc}   DV: ${inv.dv}`, 111, y + 19);
+      doc.text(`Orden Ref: ${inv.orderNumber}`, 111, y + 25);
+
+      // CUFE & PAC Certification Box (Green)
+      y = 75;
+      doc.setFillColor(236, 253, 245);
+      doc.setDrawColor(167, 243, 208);
+      doc.roundedRect(15, y, 180, 28, 2, 2, 'FD');
+
+      doc.setTextColor(6, 78, 59);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9.5);
+      doc.text('AUTORIZACIÓN Y CERTIFICACIÓN FISCAL (DGI - PAC)', 19, y + 7);
+      doc.setFont('courier', 'bold');
+      doc.setFontSize(7.5);
+      doc.text(`CUFE: ${inv.cufe}`, 19, y + 13);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8.5);
+      doc.text(`N° Autorización DGI: ${inv.authorizationCode}`, 19, y + 19);
+      doc.text(`Proveedor PAC: ${inv.pacProvider}   |   Estado: VERIFICADO Y AUTORIZADO`, 19, y + 24);
+
+      // Financial Details Table
+      y = 110;
+      doc.setFillColor(241, 245, 249);
+      doc.rect(15, y, 180, 8, 'F');
+      doc.setTextColor(51, 65, 85);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.text('Descripción de Servicios / Bienes', 19, y + 5.5);
+      doc.text('Monto ($)', 185, y + 5.5, { align: 'right' });
+
+      y += 12;
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(30, 41, 59);
+      doc.text(`Servicios de Operación Comercial (Ref: ${inv.orderNumber})`, 19, y);
+      doc.text(`$${(inv.amount - inv.taxAmount).toFixed(2)}`, 185, y, { align: 'right' });
+
+      // Divider Line
+      y += 10;
+      doc.setDrawColor(226, 232, 240);
+      doc.line(15, y, 195, y);
+
+      // Total Breakdown
+      y += 8;
+      doc.setFontSize(9);
+      doc.text('Subtotal:', 140, y);
+      doc.text(`$${(inv.amount - inv.taxAmount).toFixed(2)}`, 185, y, { align: 'right' });
+
+      y += 6;
+      doc.text('ITBMS (7% Tax):', 140, y);
+      doc.text(`$${inv.taxAmount.toFixed(2)}`, 185, y, { align: 'right' });
+
+      y += 8;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor(15, 23, 42);
+      doc.text('MONTO TOTAL CON ITBMS:', 120, y);
+      doc.text(`$${inv.amount.toFixed(2)}`, 185, y, { align: 'right' });
+
+      // Footer
+      y = 265;
+      doc.setDrawColor(203, 213, 225);
+      doc.line(15, y, 195, y);
+
+      doc.setFont('helvetica', 'italic');
+      doc.setFontSize(8);
+      doc.setTextColor(100, 116, 139);
+      doc.text('Este documento es una representación impresa de una Factura Electrónica autorizada por la DGI Panamá.', 105, y + 6, { align: 'center' });
+      doc.text('Generado por KIAAN SaaS - Sistema de Facturación Electrónica Panamá v2.1', 105, y + 10, { align: 'center' });
+
+      // Save PDF
+      doc.save(`Factura_DGI_${inv.invoiceNumber}.pdf`);
+      if (success) {
+        success(`Factura DGI PDF descargada: Factura_DGI_${inv.invoiceNumber}.pdf`);
+      }
+    } catch (err) {
+      console.error('Error generating PDF:', err);
+    }
   };
 
   const invoiceColumns: Column<FiscalInvoice>[] = [
@@ -95,15 +225,27 @@ export default function FiscalBillingPage() {
     {
       header: 'Action',
       cell: (inv) => (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setSelectedInvoice(inv);
-          }}
-          className="text-blue-600 hover:text-blue-800 font-semibold text-xs"
-        >
-          View Doc
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedInvoice(inv);
+            }}
+            className="text-blue-600 hover:text-blue-800 font-semibold text-xs"
+          >
+            View Doc
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDownloadPdf(inv);
+            }}
+            className="text-slate-600 hover:text-slate-900 font-semibold text-xs flex items-center gap-1 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-md transition-colors"
+            title="Download DGI PDF"
+          >
+            <Printer className="w-3 h-3" /> PDF
+          </button>
+        </div>
       )
     }
   ];
@@ -389,8 +531,8 @@ export default function FiscalBillingPage() {
 
               <div className="flex justify-end gap-2 pt-3 border-t border-slate-100">
                 <button
-                  onClick={() => alert('PDF generation initiated')}
-                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-semibold flex items-center gap-1.5"
+                  onClick={() => handleDownloadPdf(selectedInvoice)}
+                  className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <Printer className="w-3.5 h-3.5" /> Download DGI PDF
                 </button>
