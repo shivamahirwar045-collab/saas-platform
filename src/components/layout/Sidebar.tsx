@@ -190,7 +190,7 @@ export function Sidebar({ isMobileOpen, onCloseMobile }: SidebarProps) {
             </div>
             <div>
               <span className="text-sm font-bold text-white tracking-tight flex items-center gap-1.5">
-                KIAAN <span className="text-blue-400 font-semibold text-xs">SaaS</span>
+                NEXUS <span className="text-blue-400 font-semibold text-xs">SaaS</span>
               </span>
               <p className="text-[10px] text-slate-400 font-mono">Business Operating System</p>
             </div>

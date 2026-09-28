@@ -160,7 +160,7 @@ export default function FiscalBillingPage() {
       doc.setFontSize(8);
       doc.setTextColor(100, 116, 139);
       doc.text('Este documento es una representación impresa de una Factura Electrónica autorizada por la DGI Panamá.', 105, y + 6, { align: 'center' });
-      doc.text('Generado por KIAAN SaaS - Sistema de Facturación Electrónica Panamá v2.1', 105, y + 10, { align: 'center' });
+      doc.text('Generado por NEXUS SaaS - Sistema de Facturación Electrónica Panamá v2.1', 105, y + 10, { align: 'center' });
 
       // Save PDF
       doc.save(`Factura_DGI_${inv.invoiceNumber}.pdf`);

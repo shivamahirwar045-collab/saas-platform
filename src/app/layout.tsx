@@ -4,7 +4,7 @@ import { SaaSProvider } from '../context/SaaSContext';
 import { ToastProvider } from '../components/ui/Toast';
 
 export const metadata: Metadata = {
-  title: 'KIAAN All-in-One SaaS Platform | Business Operating System',
+  title: 'NEXUS All-in-One SaaS Platform | Business Operating System',
   description:
     'One unified platform where a business can manage its digital presence, website, ecommerce, CRM, POS, payments, fiscal billing, inventory, HR, attendance, and marketing powered by AI.',
 };

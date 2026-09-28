@@ -113,7 +113,7 @@ function DepartmentShowcase() {
             Deep, purpose-built engines for every department.
           </p>
           <p className="mt-4 text-sm sm:text-base text-slate-400 leading-relaxed">
-            Click through the core engines below to explore how KIAAN unifies point-of-sale,
+            Click through the core engines below to explore how NEXUS unifies point-of-sale,
             e-commerce storefronts, customer retention, warehouse operations, and fiscal compliance.
           </p>
         </div>
@@ -426,7 +426,7 @@ export default function LandingPage() {
             </div>
             <div>
               <span className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
-                KIAAN <span className="text-xs bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2 py-0.5 rounded-full font-semibold">BusinessOS</span>
+                NEXUS <span className="text-xs bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2 py-0.5 rounded-full font-semibold">BusinessOS</span>
               </span>
               <p className="text-[10px] text-slate-400">All-in-One Operating System</p>
             </div>
