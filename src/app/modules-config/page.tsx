@@ -16,11 +16,14 @@ import {
   Lock
 } from '../../components/icons';
 
+import { useToast } from '../../components/ui/Toast';
+
 export default function ModuleConfigPage() {
   const { modules, toggleModule, currentBusiness } = useSaaS();
+  const { addToast } = useToast();
 
   const handleApplyPreset = (presetName: string) => {
-    alert(`Preset "${presetName}" applied! Modules updated according to business profile.`);
+    addToast(`Preset "${presetName}" applied! Feature flags updated for ${currentBusiness.name}.`, 'success');
   };
 
   return (
