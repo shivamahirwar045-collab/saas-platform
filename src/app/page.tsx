@@ -529,10 +529,11 @@ export default function LandingPage() {
               return (
                 <button
                   key={tab.id}
+                  type="button"
                   onClick={() => setActiveShowcaseTab(tab.id as any)}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                  className={`cursor-pointer flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
                     isActive
-                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
+                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30 ring-2 ring-blue-400/50'
                       : 'bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-850 border border-slate-800'
                   }`}
                 >
@@ -595,8 +596,14 @@ export default function LandingPage() {
 
               <div className="space-y-3 font-mono text-xs">
                 <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 flex justify-between items-center">
-                  <span className="text-slate-400">Location Node:</span>
-                  <span className="text-white font-semibold">Panama City HQ & Multi-Store</span>
+                  <span className="text-slate-400">Active Node:</span>
+                  <span className="text-white font-semibold">
+                    {activeShowcaseTab === 'pos' && 'POS Terminal Node — Panama City HQ'}
+                    {activeShowcaseTab === 'website' && 'AI Storefront Edge CDN Node'}
+                    {activeShowcaseTab === 'crm' && 'Omnichannel WhatsApp & Deal Pipeline'}
+                    {activeShowcaseTab === 'inventory' && 'Smart Multi-Warehouse Stock Router'}
+                    {activeShowcaseTab === 'fiscal' && 'Panama DGI PAC Authorization Link'}
+                  </span>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 flex justify-between items-center">
                   <span className="text-slate-400">Database Engine:</span>
@@ -607,8 +614,14 @@ export default function LandingPage() {
                   <span className="text-emerald-400 font-semibold">AES-256 TLS 1.3 Strict</span>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 flex justify-between items-center">
-                  <span className="text-slate-400">PAC Provider:</span>
-                  <span className="text-blue-400 font-semibold">The Factory HKA / Digifact</span>
+                  <span className="text-slate-400">Engine Protocol:</span>
+                  <span className="text-blue-400 font-semibold">
+                    {activeShowcaseTab === 'pos' && 'Lightning POS Register Sync'}
+                    {activeShowcaseTab === 'website' && 'AI Section Renderer v2'}
+                    {activeShowcaseTab === 'crm' && 'Customer 360 Event Hub'}
+                    {activeShowcaseTab === 'inventory' && 'Dynamic Stock Buffer Alert'}
+                    {activeShowcaseTab === 'fiscal' && 'PAC Provider: The Factory HKA / Digifact'}
+                  </span>
                 </div>
               </div>
 
@@ -1216,12 +1229,13 @@ export default function LandingPage() {
                 className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden transition-all"
               >
                 <button
-                  onClick={() => setOpenFaq(isOpen ? null : idx)}
-                  className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-sm text-white hover:text-blue-300 transition-colors"
+                  type="button"
+                  onClick={() => setOpenFaq((prev) => (prev === idx ? null : idx))}
+                  className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-sm text-white hover:text-blue-300 transition-colors cursor-pointer select-none"
                 >
                   <span>{faq.q}</span>
                   <ChevronDown
-                    className={`w-4 h-4 text-slate-400 transition-transform ${
+                    className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
                       isOpen ? 'rotate-180 text-blue-400' : ''
                     }`}
                   />

@@ -15,6 +15,7 @@ export interface ToastMessage {
 
 interface ToastContextType {
   toast: (options: Omit<ToastMessage, 'id'>) => void;
+  addToast: (title: string, type?: ToastType, description?: string) => void;
   success: (title: string, description?: string) => void;
   error: (title: string, description?: string) => void;
   warning: (title: string, description?: string) => void;
@@ -41,6 +42,10 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     [removeToast]
   );
 
+  const addToast = useCallback((title: string, type: ToastType = 'info', description?: string) => {
+    toast({ type, title, description });
+  }, [toast]);
+
   const success = useCallback((title: string, description?: string) => {
     toast({ type: 'success', title, description });
   }, [toast]);
@@ -58,7 +63,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   }, [toast]);
 
   return (
-    <ToastContext.Provider value={{ toast, success, error, warning, info }}>
+    <ToastContext.Provider value={{ toast, addToast, success, error, warning, info }}>
       {children}
       {/* Toast Notification Container */}
       <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none">
@@ -109,6 +114,7 @@ export function useToast() {
     // Fallback if rendered outside provider
     return {
       toast: () => {},
+      addToast: (title: string) => console.log('Toast:', title),
       success: (title: string) => console.log('Toast success:', title),
       error: (title: string) => console.error('Toast error:', title),
       warning: (title: string) => console.warn('Toast warning:', title),
