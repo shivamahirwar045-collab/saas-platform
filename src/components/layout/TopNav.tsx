@@ -224,10 +224,11 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
         {/* Quick Action Button */}
         <button
           onClick={() => setIsQuickCreateOpen(true)}
-          className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-xs transition-colors shrink-0"
+          className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white rounded-xl text-xs font-semibold shadow-xs transition-all shrink-0 cursor-pointer"
+          title="Quick Create Action"
         >
           <Plus className="w-4 h-4" />
-          <span>Quick Create</span>
+          <span className="hidden sm:inline">Quick Create</span>
         </button>
 
         {/* AI Copilot Header Trigger */}
