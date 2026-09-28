@@ -309,7 +309,7 @@ export default function POSPage() {
                       key={item.product.id}
                       className="p-2.5 bg-slate-50/80 rounded-xl border border-slate-100 flex items-center justify-between text-xs"
                     >
-                      <div className="truncate mr-2 flex-1">
+                      <div className="truncate mr-2 flex-1 min-w-0">
                         <p className="font-bold text-slate-800 truncate">{item.product.name}</p>
                         <p className="text-[10px] text-slate-400">${item.product.price.toFixed(2)} each</p>
                       </div>

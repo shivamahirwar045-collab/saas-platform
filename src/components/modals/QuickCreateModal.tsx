@@ -147,11 +147,11 @@ export function QuickCreateModal({ isOpen, onClose, defaultTab = 'lead' }: Quick
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-slate-200 bg-slate-50/70 p-1 gap-1 text-xs font-medium">
+        <div className="flex border-b border-slate-200 bg-slate-50/70 p-1 gap-1 text-xs font-medium overflow-x-auto">
           <button
             type="button"
             onClick={() => setTab('lead')}
-            className={`flex-1 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+            className={`flex-1 min-w-fit px-2.5 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ${
               tab === 'lead' ? 'bg-white text-blue-600 shadow-xs font-semibold' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -160,7 +160,7 @@ export function QuickCreateModal({ isOpen, onClose, defaultTab = 'lead' }: Quick
           <button
             type="button"
             onClick={() => setTab('product')}
-            className={`flex-1 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+            className={`flex-1 min-w-fit px-2.5 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ${
               tab === 'product' ? 'bg-white text-blue-600 shadow-xs font-semibold' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -169,7 +169,7 @@ export function QuickCreateModal({ isOpen, onClose, defaultTab = 'lead' }: Quick
           <button
             type="button"
             onClick={() => setTab('customer')}
-            className={`flex-1 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+            className={`flex-1 min-w-fit px-2.5 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ${
               tab === 'customer' ? 'bg-white text-blue-600 shadow-xs font-semibold' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -178,7 +178,7 @@ export function QuickCreateModal({ isOpen, onClose, defaultTab = 'lead' }: Quick
           <button
             type="button"
             onClick={() => setTab('link')}
-            className={`flex-1 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+            className={`flex-1 min-w-fit px-2.5 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ${
               tab === 'link' ? 'bg-white text-blue-600 shadow-xs font-semibold' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -187,7 +187,7 @@ export function QuickCreateModal({ isOpen, onClose, defaultTab = 'lead' }: Quick
           <button
             type="button"
             onClick={() => setTab('ticket')}
-            className={`flex-1 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+            className={`flex-1 min-w-fit px-2.5 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ${
               tab === 'ticket' ? 'bg-white text-blue-600 shadow-xs font-semibold' : 'text-slate-600 hover:text-slate-900'
             }`}
           >

@@ -250,7 +250,7 @@ export default function CRMPage() {
         {activeTab === 'pipeline' && (
           <div className="space-y-4">
             {/* AI Assistant Banner */}
-            <div className="p-3.5 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/80 rounded-2xl flex items-center justify-between text-xs text-blue-900">
+            <div className="p-3.5 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/80 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-blue-900">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-blue-600 shrink-0" />
                 <span>
@@ -259,7 +259,7 @@ export default function CRMPage() {
               </div>
               <button
                 onClick={() => alert('AI drafted follow-up contract addendum!')}
-                className="px-3 py-1 bg-blue-600 text-white font-bold rounded-lg shrink-0 shadow-xs ml-2"
+                className="px-3 py-1 bg-blue-600 text-white font-bold rounded-lg shrink-0 shadow-xs self-start sm:self-auto"
               >
                 Draft Follow-Up
               </button>

@@ -67,7 +67,7 @@ export default function SignupPage() {
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
                 Selected Plan (Includes 7-Day Free Trial)
               </label>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 {[
                   { id: 'starter', label: 'Starter', price: '$49/mo', desc: '1 Branch' },
                   { id: 'growth', label: 'Growth', price: '$149/mo', desc: '5 Branches' },

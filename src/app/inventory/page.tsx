@@ -302,7 +302,7 @@ export default function InventoryPage() {
             <h3 className="text-base font-bold text-slate-900">Audit Trail of Stock Transfers &amp; Dispatches</h3>
             <div className="divide-y divide-slate-100">
               {movements.map(m => (
-                <div key={m.id} className="py-3 flex items-center justify-between">
+                <div key={m.id} className="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-slate-900">{m.productName}</span>
@@ -314,7 +314,7 @@ export default function InventoryPage() {
                       {m.fromLocation} → {m.toLocation} • Reason: {m.reason}
                     </p>
                   </div>
-                  <div className="text-right">
+                  <div className="text-left sm:text-right">
                     <span className="font-bold text-slate-900 text-sm">
                       {m.type === 'Inbound' ? '+' : '-'}{m.quantity} units
                     </span>

@@ -45,7 +45,7 @@ export default function ModuleConfigPage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => handleApplyPreset('Retail & Omnichannel')}
               className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-colors"
@@ -63,14 +63,14 @@ export default function ModuleConfigPage() {
 
         {/* Modules Table */}
         <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-          <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+          <div className="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <h3 className="text-sm font-bold text-slate-900">Feature Flags &amp; Functional Modules</h3>
               <p className="text-xs text-slate-500 mt-0.5">
                 Toggling a module updates menu navigation and disables background hooks for this tenant.
               </p>
             </div>
-            <span className="text-xs text-slate-500 font-medium">
+            <span className="text-xs text-slate-500 font-medium whitespace-nowrap">
               {modules.filter(m => m.enabled).length} of {modules.length} Enabled
             </span>
           </div>

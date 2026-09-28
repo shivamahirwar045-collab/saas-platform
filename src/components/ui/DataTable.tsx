@@ -227,7 +227,7 @@ export function DataTable<T extends { id: string | number }>({
       </div>
 
       {/* Pagination Footer */}
-      <div className="p-3.5 sm:px-5 border-t border-slate-100 bg-slate-50/40 flex items-center justify-between text-xs text-slate-500">
+      <div className="p-3.5 sm:px-5 border-t border-slate-100 bg-slate-50/40 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-center sm:text-left text-xs text-slate-500">
         <div>
           Showing{' '}
           <span className="font-semibold text-slate-700">

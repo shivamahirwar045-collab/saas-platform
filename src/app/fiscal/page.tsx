@@ -427,12 +427,12 @@ export default function FiscalBillingPage() {
                 { time: '2026-09-27 17:03:00', event: 'PAC Authorization Granted', inv: 'FE-001-001-00092104', latency: '112ms', status: 'Success (HTTP 200)' },
                 { time: '2026-09-27 16:59:45', event: 'Signature Hash Verified', inv: 'Internal Queue', latency: '22ms', status: 'Passed' }
               ].map((l, i) => (
-                <div key={i} className="py-3 flex items-center justify-between">
+                <div key={i} className="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                   <div>
                     <p className="font-bold text-slate-900">{l.event} — {l.inv}</p>
                     <p className="text-[11px] text-slate-400 font-mono">{l.time} • Latency: {l.latency}</p>
                   </div>
-                  <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">
+                  <span className="self-start sm:self-auto text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">
                     {l.status}
                   </span>
                 </div>
@@ -517,7 +517,7 @@ export default function FiscalBillingPage() {
                   <p className="text-slate-600">RUC: {selectedInvoice.customerRuc} DV: {selectedInvoice.dv}</p>
                 </div>
 
-                <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-200 space-y-1 text-emerald-900 font-mono">
+                <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-200 space-y-1 text-emerald-900 font-mono break-all">
                   <p className="font-bold">CUFE: {selectedInvoice.cufe}</p>
                   <p>Autorización: {selectedInvoice.authorizationCode}</p>
                   <p>PAC: {selectedInvoice.pacProvider}</p>

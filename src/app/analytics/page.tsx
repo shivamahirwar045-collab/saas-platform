@@ -303,7 +303,7 @@ export default function AnalyticsPage() {
               <h3 className="text-sm font-bold text-slate-900">Revenue Composition &amp; Fiscal Breakdown</h3>
               <p className="text-xs text-slate-500">Gross Sales vs. Promotional Discounts vs. Collected ITBMS Taxes</p>
             </div>
-            <div className="flex items-center gap-3 text-xs">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs">
               <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-blue-600 inline-block" /> Net Sales ($316,525.50)</span>
               <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-emerald-500 inline-block" /> ITBMS Tax ($23,824.50)</span>
               <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-rose-400 inline-block" /> Discounts ($14,200.00)</span>
@@ -322,7 +322,7 @@ export default function AnalyticsPage() {
                 Disc
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-4 pt-2 text-center text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-center text-xs">
               <div className="p-3 bg-slate-50 rounded-xl">
                 <span className="text-slate-500 block">Gross Volume</span>
                 <span className="font-bold text-slate-900 text-sm">$340,350.00</span>
