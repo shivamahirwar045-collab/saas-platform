@@ -86,9 +86,11 @@ export interface User {
   avatar: string;
   branchId: string;
   branchName: string;
-  status: 'active' | 'invited' | 'disabled';
+  status: 'active' | 'invited' | 'disabled' | 'suspended';
   lastActive: string;
+  lastLogin?: string;
   twoFactorEnabled: boolean;
+  mfaEnabled?: boolean;
   permissions?: Record<string, PermissionMatrix>;
 }
 
@@ -139,17 +141,18 @@ export interface WebsitePage {
   id: string;
   title: string;
   slug: string;
-  status: 'published' | 'draft';
+  status: 'published' | 'draft' | 'Draft' | 'Published';
   sections: PageSection[];
-  seoTitle: string;
-  seoDescription: string;
-  updatedAt: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  updatedAt?: string;
 }
 
 export interface WebsiteTemplate {
   id: string;
   name: string;
   industry: BusinessType;
+  category?: string;
   description: string;
   previewUrl: string;
   sectionsCount: number;
@@ -173,6 +176,7 @@ export interface Product {
   description: string;
   category: string;
   price: number;
+  costPrice?: number;
   compareAtPrice?: number;
   sku: string;
   barcode: string;
@@ -184,6 +188,8 @@ export interface Product {
   channels: ('website' | 'pos' | 'whatsapp' | 'social')[];
   seoTitle?: string;
   seoTags?: string[];
+  rating?: number;
+  reviewsCount?: number;
   createdAt: string;
 }
 
@@ -194,6 +200,7 @@ export interface OrderItem {
   sku: string;
   quantity: number;
   price: number;
+  unitPrice?: number;
   total: number;
 }
 
@@ -212,6 +219,7 @@ export interface Order {
   total: number;
   status: 'Received' | 'Prepared' | 'Shipped' | 'Out for Delivery' | 'Delivered' | 'Cancelled';
   paymentStatus: 'Paid' | 'Pending' | 'Refunded' | 'Failed';
+  paymentMethod?: string;
   fiscalStatus: 'Authorized' | 'Pending' | 'Exempt' | 'Rejected';
   cufe?: string;
   createdAt: string;
@@ -220,6 +228,7 @@ export interface Order {
 // CRM
 export interface Customer {
   id: string;
+  businessId?: string;
   name: string;
   company?: string;
   email: string;
@@ -229,6 +238,7 @@ export interface Customer {
   totalSpent: number;
   ordersCount: number;
   status: 'active' | 'lead' | 'vip' | 'inactive';
+  segment?: string;
   tags: string[];
   lastOrderDate?: string;
   notesCount: number;
@@ -247,6 +257,7 @@ export type LeadStage =
 
 export interface Lead {
   id: string;
+  businessId?: string;
   title: string;
   company: string;
   contactName: string;
@@ -296,11 +307,12 @@ export interface PaymentTransaction {
   amount: number;
   currency: string;
   method: 'Credit Card' | 'Debit Card' | 'Cash' | 'Bank Transfer' | 'Yappy' | 'Crypto';
-  status: 'Successful' | 'Pending' | 'Failed' | 'Refunded' | 'Disputed';
+  status: 'Successful' | 'Pending' | 'Failed' | 'Refunded' | 'Disputed' | 'Succeeded';
   channel: string;
   gateway: 'Stripe Adapter' | 'Authorize.Net' | 'Panama PAC Engine' | 'Local POS';
   orderId?: string;
   referenceId: string;
+  reference?: string;
   createdAt: string;
 }
 
@@ -310,9 +322,10 @@ export interface PaymentLink {
   title: string;
   description: string;
   amount: number;
+  url?: string;
   customerName?: string;
   customerEmail?: string;
-  status: 'active' | 'paid' | 'expired';
+  status: 'active' | 'paid' | 'expired' | 'Active' | 'Paid' | 'Expired';
   views: number;
   paymentCount: number;
   expiresAt: string;
@@ -346,6 +359,9 @@ export interface Warehouse {
   capacity: number;
   utilizedPercent: number;
   manager: string;
+  type?: string;
+  status?: string;
+  address?: string;
 }
 
 export interface StockMovement {
@@ -366,14 +382,18 @@ export interface Supplier {
   id: string;
   name: string;
   contactPerson: string;
+  contactName?: string;
   email: string;
   phone: string;
   taxId: string;
   categories: string[];
+  category?: string;
   rating: number;
   leadTimeDays: number;
   activeOrders: number;
-  status: 'active' | 'inactive';
+  status: 'active' | 'inactive' | 'Active' | 'Inactive';
+  paymentTerms?: string;
+  createdAt?: string;
 }
 
 export type PurchaseOrderStatus = 'Draft' | 'Ordered' | 'Partially Received' | 'Received' | 'Cancelled';
@@ -404,6 +424,7 @@ export interface DeliveryJob {
   vehicle: string;
   status: 'Received' | 'Prepared' | 'Shipped' | 'Out for Delivery' | 'Delivered' | 'Failed';
   eta: string;
+  estimatedTime?: string;
   notes: string;
   proofSignature: boolean;
   proofPhoto: boolean;
@@ -420,7 +441,7 @@ export interface Employee {
   branchName: string;
   hireDate: string;
   status: 'active' | 'on_leave' | 'terminated';
-  avatar: string;
+  avatar?: string;
   schedule: string;
   attendanceRate: number;
 }

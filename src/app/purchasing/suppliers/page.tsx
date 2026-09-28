@@ -43,8 +43,8 @@ export default function PurchasingSuppliersPage() {
   const filtered = suppliers.filter(
     (s) =>
       s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      s.contactName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      s.category.toLowerCase().includes(searchTerm.toLowerCase())
+      (s.contactName || s.contactPerson || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (s.category || (s.categories && s.categories[0]) || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleCreate = (e: React.FormEvent) => {
@@ -52,14 +52,18 @@ export default function PurchasingSuppliersPage() {
     const newSup: Supplier = {
       id: `sup_${Date.now()}`,
       name,
+      contactPerson: contactName,
       contactName,
       email,
       phone,
+      taxId: '155-RUC-001',
+      categories: [category || 'General'],
       category,
       leadTimeDays: parseInt(leadTimeDays, 10) || 7,
       rating: 5.0,
       paymentTerms,
-      status: 'Active',
+      activeOrders: 0,
+      status: 'active',
       createdAt: new Date().toISOString()
     };
     setSuppliers([...suppliers, newSup]);

@@ -311,7 +311,7 @@ export default function EcommerceOrdersPage() {
                   >
                     <div>
                       <p className="font-bold text-slate-900">{item.productName}</p>
-                      <p className="text-slate-400 font-mono text-[11px]">Qty: {item.quantity} × ${item.unitPrice.toFixed(2)}</p>
+                      <p className="text-slate-400 font-mono text-[11px]">Qty: {item.quantity} × ${(item.unitPrice ?? item.price ?? 0).toFixed(2)}</p>
                     </div>
                     <span className="font-bold font-mono text-slate-900">
                       ${item.total.toFixed(2)}

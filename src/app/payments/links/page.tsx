@@ -137,7 +137,7 @@ export default function PaymentLinksPage() {
                     <td className="py-3.5 px-4 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <button
-                          onClick={() => handleCopyLink(link.url)}
+                          onClick={() => handleCopyLink(link.url || `https://pay.kiaan.com/l/${link.code}`)}
                           className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg"
                           title="Copy Link"
                         >
@@ -181,7 +181,7 @@ export default function PaymentLinksPage() {
             </div>
 
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-left font-mono break-all text-[11px] text-slate-600">
-              {selectedShare.url}
+              {selectedShare.url || `https://pay.kiaan.com/l/${selectedShare.code}`}
             </div>
 
             <div className="grid grid-cols-2 gap-2">
@@ -189,7 +189,7 @@ export default function PaymentLinksPage() {
                 variant="outline"
                 size="sm"
                 leftIcon={<Copy className="w-3.5 h-3.5" />}
-                onClick={() => handleCopyLink(selectedShare.url)}
+                onClick={() => handleCopyLink(selectedShare.url || `https://pay.kiaan.com/l/${selectedShare.code}`)}
               >
                 Copy URL
               </Button>

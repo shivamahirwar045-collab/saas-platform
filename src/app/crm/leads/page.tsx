@@ -66,6 +66,9 @@ export default function CrmLeadsPage() {
       value: parseFloat(value) || 0,
       stage: 'New',
       priority,
+      assignedTo: 'Sales Team',
+      probability: 25,
+      nextFollowUp: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0],
       notes: 'Inbound lead captured via corporate inquiry form.',
       createdAt: new Date().toISOString()
     };

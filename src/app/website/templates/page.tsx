@@ -27,7 +27,7 @@ export default function WebsiteTemplatesGallery() {
 
   const filteredTemplates = selectedCategory === 'All'
     ? mockWebsiteTemplates
-    : mockWebsiteTemplates.filter((t) => t.category.toLowerCase().includes(selectedCategory.toLowerCase()));
+    : mockWebsiteTemplates.filter((t) => (t.category || t.industry || '').toLowerCase().includes(selectedCategory.toLowerCase()));
 
   const handleApply = (tpl: typeof mockWebsiteTemplates[0]) => {
     success('Template Activated', `Applied "${tpl.name}" to your main digital storefront.`);
@@ -105,7 +105,7 @@ export default function WebsiteTemplatesGallery() {
               <div className="h-44 bg-gradient-to-tr from-slate-900 via-indigo-950 to-blue-900 p-5 flex flex-col justify-between text-white relative overflow-hidden">
                 <div className="flex items-center justify-between z-10">
                   <span className="text-[10px] font-bold uppercase tracking-wider bg-white/20 backdrop-blur-md px-2.5 py-0.5 rounded-full">
-                    {tpl.category}
+                    {tpl.category || tpl.industry}
                   </span>
                   <div className="flex items-center gap-1 text-amber-300 text-xs">
                     <Star className="w-3.5 h-3.5 fill-amber-300" />
@@ -174,7 +174,7 @@ export default function WebsiteTemplatesGallery() {
           isOpen={!!previewTemplate}
           onClose={() => setPreviewTemplate(null)}
           title={`Theme: ${previewTemplate.name}`}
-          description={`Category: ${previewTemplate.category}`}
+          description={`Category: ${previewTemplate.category || previewTemplate.industry}`}
           width="xl"
           footer={
             <div className="flex gap-2 w-full">

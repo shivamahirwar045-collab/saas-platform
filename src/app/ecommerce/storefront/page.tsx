@@ -95,25 +95,28 @@ export default function StorefrontPreviewPage() {
     setLastOrderNum(orderNum);
 
     const newOrder = {
-      id: `ord_${Date.now()}`,
-      businessId: currentBusiness.id,
-      orderNumber: orderNum,
+      customerId: 'cust_web_guest',
       customerName: custName,
       customerEmail: custEmail,
-      status: 'Paid' as const,
+      status: 'Received' as const,
+      paymentStatus: 'Paid' as const,
       paymentMethod,
+      fiscalStatus: 'Authorized' as const,
       channel: 'Website' as const,
+      branchName: 'Online Web Store',
       items: cart.map((c) => ({
         productId: c.product.id,
         productName: c.product.name,
+        sku: c.product.sku,
         quantity: c.quantity,
+        price: c.product.price,
         unitPrice: c.product.price,
         total: c.product.price * c.quantity
       })),
       subtotal: cartSubtotal,
       tax: cartTax,
-      total: cartTotal,
-      createdAt: new Date().toISOString()
+      discount: 0,
+      total: cartTotal
     };
 
     addOrder(newOrder);

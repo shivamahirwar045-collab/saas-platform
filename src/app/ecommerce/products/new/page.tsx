@@ -77,9 +77,9 @@ export default function NewProductPage() {
     }
 
     const newProduct = {
-      id: `prod_${Date.now()}`,
       businessId: currentBusiness.id,
       name,
+      description: description || name,
       category,
       sku,
       barcode,
@@ -88,7 +88,10 @@ export default function NewProductPage() {
       compareAtPrice: parseFloat(compareAtPrice) || undefined,
       stock: parseInt(stock, 10) || 0,
       minStockAlert: parseInt(minStockAlert, 10) || 5,
-      channels: ['ecommerce', 'pos'] as any,
+      status: 'active' as const,
+      images: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=60'],
+      variants: [],
+      channels: ['website', 'pos'] as any,
       rating: 5.0,
       reviewsCount: 1
     };

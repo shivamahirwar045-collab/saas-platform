@@ -69,6 +69,9 @@ export default function CrmPipelinePage() {
       value: parseFloat(value) || 0,
       stage: targetStage,
       priority: 'High',
+      assignedTo: 'Account Exec',
+      probability: 50,
+      nextFollowUp: new Date(Date.now() + 86400000 * 3).toISOString().split('T')[0],
       notes: 'Corporate procurement agreement.',
       createdAt: new Date().toISOString()
     };

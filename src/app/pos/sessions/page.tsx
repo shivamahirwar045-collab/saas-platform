@@ -38,7 +38,7 @@ interface SessionAuditLog {
 }
 
 export default function PosSessionsPage() {
-  const { currentRegister, currentBranch, currentUser } = useSaaS();
+  const { currentRegister, currentBranch, currentUser, currentBusiness } = useSaaS();
   const { success, info } = useToast();
 
   const [activeSession, setActiveSession] = useState<{

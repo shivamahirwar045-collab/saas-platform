@@ -121,18 +121,7 @@ export default function PosRegisterFullscreen() {
       cufe: 'CUFE-' + Array.from({ length: 32 }, () => Math.floor(Math.random() * 16).toString(16)).join('')
     };
 
-    generateFiscalInvoice({
-      invoiceNumber: orderNum,
-      customerName: customer,
-      customerRUC: '155789012-2-2021',
-      customerDV: '44',
-      subtotal,
-      tax: tax7Percent,
-      total: grandTotal,
-      status: 'Issued',
-      pacStatus: 'Authorized',
-      branchId: currentBranch.id
-    });
+    generateFiscalInvoice(orderNum);
 
     setCompletedSale(saleRecord);
     setIsPaymentOpen(false);

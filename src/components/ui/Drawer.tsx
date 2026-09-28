@@ -11,6 +11,7 @@ export interface DrawerProps {
   children: React.ReactNode;
   footer?: React.ReactNode;
   width?: 'md' | 'lg' | 'xl' | '2xl';
+  size?: 'md' | 'lg' | 'xl' | '2xl';
   position?: 'right' | 'left';
 }
 
@@ -22,6 +23,7 @@ export function Drawer({
   children,
   footer,
   width = 'lg',
+  size,
   position = 'right'
 }: DrawerProps) {
   useEffect(() => {
@@ -59,7 +61,7 @@ export function Drawer({
 
       <div className={`fixed inset-y-0 ${positionClasses} flex max-w-full pl-10`}>
         <div
-          className={`w-screen ${widthClasses[width]} bg-white shadow-2xl border-l border-slate-200 flex flex-col animate-in slide-in-from-right duration-300`}
+          className={`w-screen ${widthClasses[size || width]} bg-white shadow-2xl border-l border-slate-200 flex flex-col animate-in slide-in-from-right duration-300`}
         >
           {/* Header */}
           <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between shrink-0 bg-slate-50/50">

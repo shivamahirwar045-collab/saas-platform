@@ -43,6 +43,7 @@ interface SaaSContextType {
   branches: Branch[];
   currentBranch: Branch;
   setCurrentBranch: (branch: Branch) => void;
+  setBranch: (branch: Branch) => void;
   registers: CashRegister[];
   currentRegister: CashRegister;
   setCurrentRegister: (reg: CashRegister) => void;
@@ -53,6 +54,7 @@ interface SaaSContextType {
   
   // Data entities & state
   products: Product[];
+  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
   addProduct: (product: Omit<Product, 'id' | 'createdAt'>) => void;
   updateProductStock: (productId: string, newStock: number) => void;
   
@@ -370,6 +372,7 @@ export function SaaSProvider({ children }: { children: React.ReactNode }) {
         branches,
         currentBranch,
         setCurrentBranch,
+        setBranch: setCurrentBranch,
         registers,
         currentRegister,
         setCurrentRegister,
@@ -378,6 +381,7 @@ export function SaaSProvider({ children }: { children: React.ReactNode }) {
         modules,
         toggleModule,
         products,
+        setProducts,
         addProduct,
         updateProductStock,
         orders,

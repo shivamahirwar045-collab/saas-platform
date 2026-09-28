@@ -73,6 +73,7 @@ export default function SettingsUsersPage() {
 
     const newUser: User = {
       id: `usr_${Date.now().toString().slice(-4)}`,
+      businessId: 'biz_01',
       name: inviteName,
       email: inviteEmail,
       role: inviteRole,
@@ -80,7 +81,9 @@ export default function SettingsUsersPage() {
       branchId: 'br_01',
       branchName: inviteBranch,
       status: 'active',
+      lastActive: 'Just now',
       lastLogin: 'Pending Invitation Acceptance',
+      twoFactorEnabled: true,
       mfaEnabled: true
     };
 

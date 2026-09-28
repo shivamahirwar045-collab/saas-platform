@@ -37,6 +37,14 @@ export const LayoutDashboard = createIcon(
   </>
 );
 
+export const Database = createIcon(
+  <>
+    <ellipse cx="12" cy="5" rx="9" ry="3" />
+    <path d="M3 5V19A9 3 0 0 0 21 19V5" />
+    <path d="M3 12A9 3 0 0 0 21 12" />
+  </>
+);
+
 export const Globe = createIcon(
   <>
     <circle cx="12" cy="12" r="10" />
@@ -50,6 +58,14 @@ export const ShoppingCart = createIcon(
     <circle cx="8" cy="21" r="1" />
     <circle cx="19" cy="21" r="1" />
     <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+  </>
+);
+
+export const ShoppingBag = createIcon(
+  <>
+    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+    <path d="M3 6h18" />
+    <path d="M16 10a4 4 0 0 1-8 0" />
   </>
 );
 
