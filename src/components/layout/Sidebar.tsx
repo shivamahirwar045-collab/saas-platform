@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSaaS } from '../../context/SaaSContext';
@@ -30,9 +30,6 @@ import {
   FileText
 } from '../icons';
 
-const useIsomorphicLayoutEffect =
-  typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
-
 // Module-level cache to survive client-side route transitions instantly
 let cachedSidebarScroll: number | null = null;
 
@@ -48,7 +45,7 @@ export function Sidebar({ isMobileOpen, onCloseMobile }: SidebarProps) {
   const isRestoringRef = useRef(false);
 
   // Restore scroll position on mount and route change
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     const nav = navRef.current;
     if (!nav) return;
 

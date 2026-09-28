@@ -24,7 +24,7 @@ export default function LoginPage() {
   const { success, info } = useToast();
 
   const [email, setEmail] = useState('alexander.sterling@panamatech.pa');
-  const [password, setPassword] = useState('••••••••••••');
+  const [password, setPassword] = useState('demopassword123');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showMfaModal, setShowMfaModal] = useState(false);
@@ -58,6 +58,7 @@ export default function LoginPage() {
 
   const handleMfaVerify = (e: React.FormEvent) => {
     e.preventDefault();
+    if (mfaCode.length < 6) return;
     setIsLoading(true);
 
     setTimeout(() => {
@@ -212,8 +213,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => {
-                  info('Single Sign-On', 'Simulated Google Workspace SSO token hand-off');
-                  router.push('/dashboard');
+                  window.open('https://accounts.google.com/signin', '_blank', 'noopener,noreferrer');
                 }}
                 className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-700 bg-slate-950 hover:bg-slate-850 text-xs font-semibold text-slate-300 transition-colors"
               >
@@ -222,8 +222,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => {
-                  info('Single Sign-On', 'Simulated Microsoft Entra ID token hand-off');
-                  router.push('/dashboard');
+                  window.open('https://login.microsoftonline.com', '_blank', 'noopener,noreferrer');
                 }}
                 className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-700 bg-slate-950 hover:bg-slate-850 text-xs font-semibold text-slate-300 transition-colors"
               >
@@ -289,9 +288,10 @@ export default function LoginPage() {
                   variant="primary"
                   size="md"
                   isLoading={isLoading}
-                  className="flex-1"
+                  disabled={mfaCode.length < 6}
+                  className={`flex-1 transition-opacity ${mfaCode.length < 6 ? 'opacity-40 cursor-not-allowed' : ''}`}
                 >
-                  Verify & Enter
+                  Verify &amp; Enter
                 </Button>
               </div>
             </form>

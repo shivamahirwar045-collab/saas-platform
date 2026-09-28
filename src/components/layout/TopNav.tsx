@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useSaaS } from '../../context/SaaSContext';
 import {
   Search,
@@ -27,6 +27,8 @@ interface TopNavProps {
   onToggleMobileSidebar: () => void;
 }
 
+type ActiveMenu = 'biz' | 'branch' | 'role' | 'notif' | 'user' | null;
+
 export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
   const {
     businesses,
@@ -46,12 +48,28 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
     setIsCopilotOpen
   } = useSaaS();
 
-  const [isBizMenuOpen, setIsBizMenuOpen] = useState(false);
-  const [isBranchMenuOpen, setIsBranchMenuOpen] = useState(false);
-  const [isRoleMenuOpen, setIsRoleMenuOpen] = useState(false);
-  const [isNotifMenuOpen, setIsNotifMenuOpen] = useState(false);
+  // Single state — only one menu can ever be open at a time
+  const [activeMenu, setActiveMenu] = useState<ActiveMenu>(null);
   const [isQuickCreateOpen, setIsQuickCreateOpen] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
+  const headerRef = useRef<HTMLElement>(null);
+
+  const toggle = (menu: ActiveMenu) => {
+    setActiveMenu(prev => (prev === menu ? null : menu));
+  };
+
+  const closeMenu = () => setActiveMenu(null);
+
+  // Close when clicking outside the header
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        closeMenu();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const availableRoles = [
     'Owner',
@@ -67,7 +85,7 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
   ] as const;
 
   return (
-    <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+    <header ref={headerRef} className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
       {/* Left: Mobile trigger & Multi-Tenant Switchers */}
       <div className="flex items-center gap-2 sm:gap-3 shrink-0">
         <button
@@ -81,12 +99,7 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
         {/* Business Switcher */}
         <div className="relative">
           <button
-            onClick={() => {
-              setIsBizMenuOpen(!isBizMenuOpen);
-              setIsBranchMenuOpen(false);
-              setIsRoleMenuOpen(false);
-              setIsNotifMenuOpen(false);
-            }}
+            onClick={() => toggle('biz')}
             className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl border border-slate-200/90 hover:border-slate-300 hover:bg-slate-50 transition-all text-left"
           >
             <span className="w-6 h-6 rounded-lg bg-blue-50 border border-blue-200/60 flex items-center justify-center text-sm">
@@ -103,7 +116,7 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
             <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
           </button>
 
-          {isBizMenuOpen && (
+          {activeMenu === 'biz' && (
             <div className="absolute left-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-200 p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
               <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider px-2 py-1">
                 Switch Business Account
@@ -114,7 +127,7 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
                     key={b.id}
                     onClick={() => {
                       setCurrentBusiness(b);
-                      setIsBizMenuOpen(false);
+                      closeMenu();
                     }}
                     className={`w-full flex items-center justify-between p-2 rounded-lg text-xs transition-colors text-left ${b.id === currentBusiness.id
                       ? 'bg-blue-50/80 text-blue-700 font-semibold'
@@ -139,12 +152,7 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
         {/* Branch / Store Switcher */}
         <div className="relative hidden md:block">
           <button
-            onClick={() => {
-              setIsBranchMenuOpen(!isBranchMenuOpen);
-              setIsBizMenuOpen(false);
-              setIsRoleMenuOpen(false);
-              setIsNotifMenuOpen(false);
-            }}
+            onClick={() => toggle('branch')}
             className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl border border-slate-200/70 hover:bg-slate-50 text-left text-xs text-slate-700 transition-colors"
           >
             <MapPin className="w-3.5 h-3.5 text-slate-400" />
@@ -152,7 +160,7 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
             <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
           </button>
 
-          {isBranchMenuOpen && (
+          {activeMenu === 'branch' && (
             <div className="absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-slate-200 p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
               <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider px-2 py-1">
                 Select Active Branch / Location
@@ -163,7 +171,7 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
                     key={br.id}
                     onClick={() => {
                       setCurrentBranch(br);
-                      setIsBranchMenuOpen(false);
+                      closeMenu();
                     }}
                     className={`w-full flex items-center justify-between p-2 rounded-lg text-xs transition-colors text-left ${br.id === currentBranch.id
                       ? 'bg-blue-50 text-blue-700 font-semibold'
@@ -242,14 +250,9 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
         </button>
 
         {/* Role Switcher (Simulate Multi-Role Granular Permissions) */}
-        <div className="relative shrink-0">
+        <div className="relative shrink-0 z-[53]">
           <button
-            onClick={() => {
-              setIsRoleMenuOpen(!isRoleMenuOpen);
-              setIsBizMenuOpen(false);
-              setIsBranchMenuOpen(false);
-              setIsNotifMenuOpen(false);
-            }}
+            onClick={() => toggle('role')}
             className="flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs text-slate-700 transition-colors"
             title="Switch Simulated Role"
           >
@@ -258,7 +261,7 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
             <ChevronDown className="w-3 h-3 text-slate-400" />
           </button>
 
-          {isRoleMenuOpen && (
+          {activeMenu === 'role' && (
             <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-xl border border-slate-200 p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
               <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider px-2 py-1">
                 Simulate Role Permissions
@@ -269,7 +272,7 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
                     key={role}
                     onClick={() => {
                       switchUserRole(role);
-                      setIsRoleMenuOpen(false);
+                      closeMenu();
                     }}
                     className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left ${currentUser.role === role
                       ? 'bg-blue-50 text-blue-700 font-semibold'
@@ -286,14 +289,9 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
         </div>
 
         {/* Notifications Dropdown */}
-        <div className="relative shrink-0">
+        <div className="relative shrink-0 z-[52]">
           <button
-            onClick={() => {
-              setIsNotifMenuOpen(!isNotifMenuOpen);
-              setIsBizMenuOpen(false);
-              setIsBranchMenuOpen(false);
-              setIsRoleMenuOpen(false);
-            }}
+            onClick={() => toggle('notif')}
             className="relative p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
             title="Notifications"
           >
@@ -303,7 +301,7 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
             )}
           </button>
 
-          {isNotifMenuOpen && (
+          {activeMenu === 'notif' && (
             <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 p-3 z-50 animate-in fade-in zoom-in-95 duration-150">
               <div className="flex items-center justify-between pb-2 border-b border-slate-100 px-1">
                 <div className="flex items-center gap-1.5">
@@ -344,7 +342,7 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
               <div className="pt-2 border-t border-slate-100 text-center">
                 <Link
                   href="/settings"
-                  onClick={() => setIsNotifMenuOpen(false)}
+                  onClick={closeMenu}
                   className="text-[11px] text-slate-500 hover:text-slate-800 font-medium"
                 >
                   Notification Preferences &amp; Webhooks →
@@ -355,15 +353,9 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
         </div>
 
         {/* User Profile Dropdown */}
-        <div className="relative shrink-0">
+        <div className="relative shrink-0 z-[51]">
           <button
-            onClick={() => {
-              setIsUserMenuOpen(!isUserMenuOpen);
-              setIsBizMenuOpen(false);
-              setIsBranchMenuOpen(false);
-              setIsRoleMenuOpen(false);
-              setIsNotifMenuOpen(false);
-            }}
+            onClick={() => toggle('user')}
             className="flex items-center gap-2 p-1 pr-2 rounded-xl hover:bg-slate-100 transition-colors"
             title="Account"
           >
@@ -376,7 +368,7 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
             <ChevronDown className="w-3 h-3 text-slate-400 hidden sm:block" />
           </button>
 
-          {isUserMenuOpen && (
+          {activeMenu === 'user' && (
             <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-200 p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
               {/* User info header */}
               <div className="px-2 py-2 mb-1 border-b border-slate-100">
@@ -387,7 +379,7 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
               <div className="space-y-0.5">
                 <Link
                   href="/settings"
-                  onClick={() => setIsUserMenuOpen(false)}
+                  onClick={closeMenu}
                   className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs text-slate-700 hover:bg-slate-50 transition-colors"
                 >
                   <UserCheck className="w-3.5 h-3.5 text-slate-400" />
@@ -396,7 +388,7 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
 
                 <Link
                   href="/settings"
-                  onClick={() => setIsUserMenuOpen(false)}
+                  onClick={closeMenu}
                   className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs text-slate-700 hover:bg-slate-50 transition-colors"
                 >
                   <Settings className="w-3.5 h-3.5 text-slate-400" />
@@ -407,7 +399,7 @@ export function TopNav({ onToggleMobileSidebar }: TopNavProps) {
               <div className="mt-1 pt-1 border-t border-slate-100">
                 <Link
                   href="/"
-                  onClick={() => setIsUserMenuOpen(false)}
+                  onClick={closeMenu}
                   className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs text-rose-600 hover:bg-rose-50 transition-colors font-semibold"
                 >
                   <LogOut className="w-3.5 h-3.5" />
